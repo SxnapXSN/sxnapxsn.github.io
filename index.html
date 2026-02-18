@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>JS Animation Test</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px 60px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255,41,144,.35);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 42px;
+      background: linear-gradient(90deg,#ff2990,#7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    button {
+      padding: 14px 32px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg,#ff2990,#7c3aed);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255,41,144,.7);
+      transition: all .25s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255,41,144,1);
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ff2990;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: explode 1s linear forwards;
+    }
+
+    @keyframes explode {
+      to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1 id="text">Anti Gravity ✨</h1>
+  <button onclick="boom()">ลองกดดู 😆</button>
+</div>
+
+<script>
+function boom() {
+  document.getElementById("text").innerText = "JS Animation 🔥";
+
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+
+    p.style.left = innerWidth / 2 + "px";
+    p.style.top = innerHeight / 2 + "px";
+
+    p.style.setProperty("--x", (Math.random() * 400 - 200) + "px");
+    p.style.setProperty("--y", (Math.random() * 400 - 200) + "px");
+
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+  }
+}
+</script>
+
+</body>
+</html>
