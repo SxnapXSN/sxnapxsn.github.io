@@ -2163,14 +2163,14 @@ export default function App() {
                 <button type="button" onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>
                   Replay
                 </button>
+                <button type="button" onClick={() => setMobileMenuOpen(value => !value)}>
+                  {mobileMenuOpen ? "Close" : "Menu"}
+                </button>
                 <button
                   className="theme-toggle"
                   onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
                 >
                   {isLight ? "Dark" : "Light"}
-                </button>
-                <button type="button" onClick={() => setMobileMenuOpen(value => !value)}>
-                  {mobileMenuOpen ? "Close" : "Menu"}
                 </button>
               </div>
             </div>
