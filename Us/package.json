@@ -1,0 +1,22 @@
+{
+  "name": "xsn-us-showcase",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5199",
+    "host": "vite --host 127.0.0.1 --port 5199",
+    "build": "vite build",
+    "build:pages": "vite build --outDir docs --emptyOutDir",
+    "preview": "vite preview --host 127.0.0.1 --port 4199",
+    "serve": "npm run build && node server.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "gsap": "^3.15.0",
+    "ogl": "^1.0.11",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  }
+}

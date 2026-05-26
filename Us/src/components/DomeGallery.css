@@ -1,0 +1,177 @@
+.dome-gallery {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 620px;
+  margin: 26px 0 34px;
+  padding: 34px 24px;
+  border: 1px solid rgba(121, 245, 255, 0.16);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(121, 245, 255, 0.18), transparent 28%),
+    radial-gradient(circle at 50% 90%, rgba(255, 77, 144, 0.12), transparent 34%),
+    rgba(8, 15, 27, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 30px 100px rgba(0, 0, 0, 0.26);
+  overflow: visible;
+  perspective: 1300px;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.dome-gallery:active {
+  cursor: grabbing;
+}
+
+.dome-gallery__halo {
+  position: absolute;
+  inset: auto 8% 7%;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(121, 245, 255, 0.22), transparent 70%);
+  filter: blur(18px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.dome-gallery__drag-shell,
+.dome-gallery__orbit {
+  position: relative;
+  width: 1px;
+  height: 1px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.dome-gallery__orbit {
+  animation: dome-spin var(--dome-spin-duration, 38s) linear infinite;
+}
+
+.dome-gallery--static .dome-gallery__orbit {
+  animation: none;
+}
+
+.dome-gallery__card {
+  position: absolute;
+  left: -94px;
+  top: -128px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  width: 188px;
+  height: 256px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(9, 18, 31, 0.86);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    0 22px 60px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.dome-gallery::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.26));
+  opacity: 0.35;
+}
+
+.dome-gallery__media,
+.dome-gallery__card img,
+.dome-gallery__placeholder {
+  width: 100%;
+  min-height: 0;
+  border-radius: 18px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.dome-gallery__media {
+  position: relative;
+  height: 100%;
+}
+
+.dome-gallery__card img {
+  display: block;
+  height: 100%;
+  user-select: none;
+  pointer-events: none;
+}
+
+.dome-gallery__placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background:
+    linear-gradient(rgba(121, 245, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 245, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 50% 40%, rgba(121, 245, 255, 0.22), transparent 58%);
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.dome-gallery__index {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 1000;
+  letter-spacing: 0.12em;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.dome-gallery__card strong {
+  position: relative;
+  z-index: 3;
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.lumen .dome-gallery {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(47, 166, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 90%, rgba(255, 77, 144, 0.08), transparent 34%),
+    rgba(255, 255, 255, 0.56);
+}
+
+@media (max-width: 780px) {
+  .dome-gallery {
+    min-height: 460px;
+    padding: 28px 12px;
+    perspective: 900px;
+    overflow: hidden;
+  }
+
+  .dome-gallery__card {
+    left: -72px;
+    top: -102px;
+    width: 144px;
+    height: 204px;
+  }
+}
+
+@keyframes dome-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(-360deg);
+  }
+}
