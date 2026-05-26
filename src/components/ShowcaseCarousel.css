@@ -68,6 +68,7 @@
   grid-auto-columns: unset;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
+  padding-inline: 2px;
 }
 
 .showcase-carousel--clip .showcase-carousel__item {
@@ -219,6 +220,7 @@
   }
 
   .showcase-carousel--clip .showcase-carousel__item {
+    min-height: 0;
     padding: 10px;
     gap: 10px;
     border-radius: 22px;

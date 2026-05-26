@@ -3752,6 +3752,11 @@ body.xsn-edit-mode .mobile-edit-button {
     padding: 12px 12px 108px;
   }
 
+  .section-block {
+    width: 100%;
+    padding-inline: 4px;
+  }
+
   .topbar--mobile {
     top: 10px;
     gap: 12px;
@@ -3923,6 +3928,38 @@ body.xsn-edit-mode .mobile-edit-button {
     font-size: 0.74rem;
     text-align: center;
     white-space: normal;
+  }
+
+  .media-grid,
+  .media-grid--gallery,
+  .media-grid--wide,
+  .contact-dock-panel,
+  .visitor-ledger,
+  .detail-grid,
+  .timeline,
+  .stats-band {
+    padding-inline: 2px;
+  }
+
+  .media-grid--gallery .media-card--clean,
+  .media-grid--wide .media-card--clean {
+    min-height: clamp(220px, 48vw, 320px);
+  }
+
+  .media-card--clean .media-card__stage,
+  .media-grid--wide .media-card--clean .media-card__stage {
+    position: relative;
+    inset: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 1 / 1.12;
+  }
+
+  .media-card--clean .media-card__stage img,
+  .media-card--clean .media-card__stage video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .duck-launch {
