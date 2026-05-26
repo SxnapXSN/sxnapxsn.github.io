@@ -560,7 +560,7 @@ body.xsn-interacting .lanyard-card {
 
 .topbar-actions {
   display: grid;
-  grid-template-columns: auto minmax(128px, 168px) minmax(116px, 144px);
+  grid-template-columns: auto minmax(118px, 146px) minmax(128px, 168px) minmax(116px, 144px);
   align-items: center;
   gap: 8px;
   padding: 7px;
@@ -589,6 +589,10 @@ body.xsn-interacting .lanyard-card {
 .topbar-actions .theme-select {
   width: 100%;
   max-width: 168px;
+}
+
+.topbar-actions .viewport-select {
+  max-width: 146px;
 }
 
 .topbar-actions .effect-select {

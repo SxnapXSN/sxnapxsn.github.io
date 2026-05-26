@@ -298,6 +298,12 @@ const effectQualityOptions = [
   ["ultra", "Ultra"]
 ];
 
+const viewportModeOptions = [
+  ["auto", "UI Auto"],
+  ["desktop", "UI Desktop"],
+  ["mobile", "UI Mobile"]
+];
+
 const effectQualityConfig = {
   minimal: {
     darkVeil: false,
@@ -385,6 +391,7 @@ const defaultState = {
   theme: "noir",
   themePreset: "rose",
   effectQuality: "low",
+  viewportMode: "auto",
   roseDefaultApplied: true,
   detailsDefaultOffApplied: true,
   introEnabled: true,
@@ -491,6 +498,7 @@ function loadState() {
       ...parsed,
       sections,
       effectQuality: parsed.effectQuality || "low",
+      viewportMode: parsed.viewportMode || "auto",
       themePreset: parsed.roseDefaultApplied ? (parsed.themePreset || "rose") : "rose",
       roseDefaultApplied: true,
       detailsDefaultOffApplied: true
@@ -1641,7 +1649,7 @@ function AegisLiveStatus() {
 export default function App() {
   const [siteState, setSiteState] = useState(loadState);
   const [showIntro, setShowIntro] = useState(() => loadState().introEnabled);
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 760);
+  const [deviceMobile, setDeviceMobile] = useState(() => window.innerWidth <= 760);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dragState, setDragState] = useState(null);
   const [dropState, setDropState] = useState(null);
@@ -1659,11 +1667,14 @@ export default function App() {
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 760px)");
-    const sync = event => setIsMobile(event.matches);
-    setIsMobile(media.matches);
+    const sync = event => setDeviceMobile(event.matches);
+    setDeviceMobile(media.matches);
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
   }, []);
+
+  const viewportMode = siteState.viewportMode || "auto";
+  const isMobile = viewportMode === "mobile" ? true : viewportMode === "desktop" ? false : deviceMobile;
 
   useEffect(() => {
     if (!isMobile) {
@@ -2154,6 +2165,16 @@ export default function App() {
                   <button onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>Replay Intro</button>
                 </div>
                 <select
+                  className="theme-select viewport-select"
+                  value={viewportMode}
+                  aria-label="Viewport mode"
+                  onChange={event => setSiteState(current => ({ ...current, viewportMode: event.target.value }))}
+                >
+                  {viewportModeOptions.map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+                <select
                   className="theme-select"
                   value={siteState.themePreset || "rose"}
                   aria-label="Theme preset"
@@ -2189,6 +2210,16 @@ export default function App() {
                   {isLight ? "Dark" : "Light"}
                 </button>
               </div>
+              <select
+                className="theme-select viewport-select"
+                value={viewportMode}
+                aria-label="Viewport mode"
+                onChange={event => setSiteState(current => ({ ...current, viewportMode: event.target.value }))}
+              >
+                {viewportModeOptions.map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
               <select
                 className="theme-select"
                 value={siteState.themePreset || "rose"}
