@@ -560,9 +560,9 @@ body.xsn-interacting .lanyard-card {
 
 .site-shell.mobile-mode .topbar--mobile {
   top: 10px;
-  gap: 16px;
-  padding: 14px;
-  border-radius: 30px;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 26px;
 }
 
 .site-shell.mobile-mode .topbar--mobile .pill-nav,
@@ -572,35 +572,35 @@ body.xsn-interacting .lanyard-card {
 
 .site-shell.mobile-mode .topbar-mobile-head {
   display: grid;
-  grid-template-columns: minmax(84px, 98px) minmax(0, 1fr);
+  grid-template-columns: 78px minmax(0, 1fr);
   align-items: start;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   align-items: stretch;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts button,
 .site-shell.mobile-mode .topbar-mobile-head .brand-mark {
-  min-height: 54px;
+  min-height: 46px;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts .viewport-select--mobile {
   grid-column: 1 / -1;
   width: 100%;
-  min-height: 54px;
+  min-height: 48px;
   max-width: none;
 }
 
 .site-shell.mobile-mode .topbar-mobile-panel {
   display: none;
   width: 100%;
-  gap: 14px;
+  gap: 12px;
 }
 
 .site-shell.mobile-mode .topbar--mobile.is-open .topbar-mobile-panel {
@@ -609,24 +609,37 @@ body.xsn-interacting .lanyard-card {
 
 .site-shell.mobile-mode .topbar--mobile .topbar-actions {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   width: 100%;
   padding: 0;
   border: 0;
   background: transparent;
   box-shadow: none;
-  gap: 12px;
+  gap: 10px;
 }
 
+.site-shell.mobile-mode .topbar--mobile .topbar-mobile-control,
 .site-shell.mobile-mode .topbar--mobile .topbar-actions__mode {
+  display: grid;
+  gap: 6px;
   width: 100%;
+}
+
+.site-shell.mobile-mode .topbar--mobile .topbar-mobile-control span {
+  padding-inline: 2px;
+  color: color-mix(in srgb, var(--accent-2), white 18%);
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .site-shell.mobile-mode .topbar--mobile .topbar-actions__mode button,
+.site-shell.mobile-mode .topbar--mobile .topbar-mobile-control .theme-select,
 .site-shell.mobile-mode .topbar--mobile .theme-select {
   width: 100%;
   max-width: none;
-  min-height: 54px;
+  min-height: 46px;
 }
 
 .site-shell.mobile-mode .topbar-mobile-head .brand-mark {
@@ -635,15 +648,34 @@ body.xsn-interacting .lanyard-card {
   width: 100%;
   aspect-ratio: 1;
   padding: 0;
-  border-radius: 28px;
-  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  border-radius: 24px;
+  font-size: clamp(1.15rem, 3.8vw, 1.5rem);
   font-weight: 1000;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts button {
   width: 100%;
   justify-content: center;
-  font-size: 0.98rem;
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.site-shell.mobile-mode .topbar--mobile .pill-nav--compact {
+  gap: 8px;
+}
+
+.site-shell.mobile-mode .pill-nav--compact .pill-nav__items {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+
+.site-shell.mobile-mode .pill-nav--compact .pill-nav__item {
+  min-height: 40px;
+  justify-content: center;
+  padding: 0 10px !important;
+  font-size: 0.76rem;
 }
 
 .topbar-actions {
