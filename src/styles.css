@@ -2262,14 +2262,18 @@ select:focus {
   font-size: 0.68rem;
   font-weight: 1000;
   letter-spacing: 0.24em;
+  width: 100%;
+  text-align: center;
 }
 
 .intro-loader b {
-  margin-top: -8px;
+  margin-top: 0;
   color: rgba(255, 255, 255, 0.88);
   font-size: 0.86rem;
   font-weight: 1000;
   letter-spacing: 0.18em;
+  width: 100%;
+  text-align: center;
   text-shadow: 0 0 22px color-mix(in srgb, var(--hot), transparent 48%);
 }
 
@@ -2683,7 +2687,7 @@ select:focus {
 
   .dock {
     left: 12px;
-    right: 12px;
+    right: min(44vw, 188px);
     bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
     translate: 0 0;
     width: auto;
@@ -2700,6 +2704,8 @@ select:focus {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
     min-height: 44px;
     padding: 10px 16px;
+    width: min(40vw, 182px);
+    min-width: 152px;
   }
 
   .dock a {
@@ -3932,9 +3938,9 @@ body.xsn-edit-mode .mobile-edit-button {
 
   .topbar--mobile {
     top: 10px;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 24px;
+    gap: 16px;
+    padding: 14px;
+    border-radius: 30px;
   }
 
   .topbar--mobile .pill-nav,
@@ -3943,35 +3949,36 @@ body.xsn-edit-mode .mobile-edit-button {
   }
 
   .topbar-mobile-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: minmax(84px, 98px) minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
     width: 100%;
   }
 
   .topbar-mobile-shortcuts {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-items: stretch;
   }
 
   .topbar-mobile-shortcuts button,
   .topbar-mobile-head .brand-mark {
-    min-height: 46px;
+    min-height: 54px;
   }
 
   .topbar-mobile-shortcuts .viewport-select--mobile {
-    min-height: 46px;
-    max-width: 136px;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 54px;
+    max-width: none;
   }
 
   .topbar-mobile-panel {
     display: none;
     width: 100%;
-    gap: 12px;
+    gap: 14px;
   }
 
   .topbar--mobile.is-open .topbar-mobile-panel {
@@ -3986,6 +3993,7 @@ body.xsn-edit-mode .mobile-edit-button {
     border: 0;
     background: transparent;
     box-shadow: none;
+    gap: 12px;
   }
 
   .topbar--mobile .topbar-actions__mode {
@@ -3996,6 +4004,24 @@ body.xsn-edit-mode .mobile-edit-button {
   .topbar--mobile .theme-select {
     width: 100%;
     max-width: none;
+    min-height: 54px;
+  }
+
+  .topbar-mobile-head .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: 28px;
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    font-weight: 1000;
+  }
+
+  .topbar-mobile-shortcuts button {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.98rem;
   }
 
   .section-block {
@@ -4147,7 +4173,8 @@ body.xsn-edit-mode .mobile-edit-button {
     left: auto;
     right: 14px;
     bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-    width: fit-content;
+    width: min(40vw, 182px);
+    min-width: 152px;
     max-width: calc(100vw - 28px);
     justify-content: center;
   }
