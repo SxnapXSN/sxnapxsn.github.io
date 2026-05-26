@@ -20,10 +20,20 @@ export default function DomeGallery({ items = fallbackItems, autoSpin = true, sp
   const baseRadius = useCompactArc ? 190 + count * 24 : count > 6 ? 430 : 360 + count * 22;
   const radius = Math.max(count > 6 ? 420 : 300, baseRadius * depth);
   const [dragRotation, setDragRotation] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 760);
   const galleryRef = useRef(null);
   const dragRef = useRef({ active: false, lastX: 0 });
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 760px)");
+    const sync = event => setIsMobile(event.matches);
+    setIsMobile(media.matches);
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return undefined;
     const gallery = galleryRef.current;
     if (!gallery) return undefined;
 
@@ -48,7 +58,32 @@ export default function DomeGallery({ items = fallbackItems, autoSpin = true, sp
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <div ref={galleryRef} className="dome-gallery dome-gallery--mobile" aria-label="Dome gallery">
+        <div className="dome-gallery__mobile-track">
+          {galleryItems.map((item, index) => {
+            const label = item.text || item.title || `#Dome-${index + 1} Image slot`;
+            return (
+              <article className="dome-gallery__mobile-card" key={`${label}-${index}`}>
+                <span className="dome-gallery__index">{String(index + 1).padStart(2, "0")}</span>
+                <div className="dome-gallery__media">
+                  {item.image ? (
+                    <img src={item.image} alt={label} draggable={false} />
+                  ) : (
+                    <div className="dome-gallery__placeholder" />
+                  )}
+                </div>
+                <strong>{label}</strong>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   const startDrag = event => {
     dragRef.current = { active: true, lastX: event.clientX };

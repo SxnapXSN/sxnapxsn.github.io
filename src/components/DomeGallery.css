@@ -25,6 +25,57 @@
   cursor: grabbing;
 }
 
+.dome-gallery--mobile {
+  min-height: 0;
+  padding: 18px 14px 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  perspective: none;
+  cursor: auto;
+  touch-action: pan-x;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.dome-gallery--mobile::-webkit-scrollbar {
+  display: none;
+}
+
+.dome-gallery__mobile-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 78vw);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.dome-gallery__mobile-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(220px, 1fr) auto;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(9, 18, 31, 0.86);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    0 22px 60px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+  scroll-snap-align: center;
+}
+
+.dome-gallery__mobile-card strong {
+  position: relative;
+  z-index: 2;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
 .dome-gallery__halo {
   position: absolute;
   inset: auto 8% 7%;
@@ -152,7 +203,7 @@
 }
 
 @media (max-width: 780px) {
-  .dome-gallery {
+  .dome-gallery:not(.dome-gallery--mobile) {
     min-height: 460px;
     padding: 28px 12px;
     perspective: 900px;

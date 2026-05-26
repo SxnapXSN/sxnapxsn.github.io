@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./PillNav.css";
 
-export default function PillNav({ items, logo = "XSN" }) {
+export default function PillNav({ items, logo = "XSN", compact = false, mobileOpen = false, onNavigate = null }) {
   const [activeHref, setActiveHref] = useState(items[0]?.href || "#hero");
 
   useEffect(() => {
@@ -12,8 +12,8 @@ export default function PillNav({ items, logo = "XSN" }) {
   }, []);
 
   return (
-    <nav className="pill-nav" aria-label="Primary navigation">
-      <a className="pill-nav__logo" href="#hero" aria-label="XSN home">
+    <nav className={`pill-nav ${compact ? "pill-nav--compact" : ""} ${mobileOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+      <a className="pill-nav__logo" href="#hero" aria-label="XSN home" onClick={onNavigate || undefined}>
         {logo}
       </a>
       <div className="pill-nav__items">
@@ -23,6 +23,7 @@ export default function PillNav({ items, logo = "XSN" }) {
             className={`pill-nav__item ${activeHref === item.href ? "is-active" : ""}`}
             href={item.href}
             aria-current={activeHref === item.href ? "page" : undefined}
+            onClick={onNavigate || undefined}
           >
             <span>{item.label}</span>
             <i aria-hidden="true" />

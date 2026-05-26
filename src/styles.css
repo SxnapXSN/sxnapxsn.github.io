@@ -552,6 +552,12 @@ body.xsn-interacting .lanyard-card {
   flex-wrap: wrap;
 }
 
+.topbar-mobile-head,
+.topbar-mobile-shortcuts,
+.topbar-mobile-panel {
+  display: none;
+}
+
 .topbar-actions {
   display: grid;
   grid-template-columns: auto minmax(128px, 168px) minmax(116px, 144px);
@@ -3725,15 +3731,211 @@ body.xsn-edit-mode .mobile-edit-button {
 }
 
 @media (max-width: 760px) {
+  .site-shell.mobile-mode {
+    padding: 12px 12px 108px;
+  }
+
+  .topbar--mobile {
+    top: 10px;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 24px;
+  }
+
+  .topbar--mobile .pill-nav,
+  .topbar--mobile > .topbar-actions {
+    display: none;
+  }
+
+  .topbar-mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .topbar-mobile-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topbar-mobile-shortcuts button,
+  .topbar-mobile-head .brand-mark {
+    min-height: 46px;
+  }
+
+  .topbar-mobile-panel {
+    display: none;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .topbar--mobile.is-open .topbar-mobile-panel {
+    display: grid;
+  }
+
+  .topbar--mobile .topbar-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .topbar--mobile .topbar-actions__mode {
+    width: 100%;
+  }
+
+  .topbar--mobile .topbar-actions__mode button,
+  .topbar--mobile .theme-select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .section-block {
+    padding-top: 52px;
+  }
+
+  .hero {
+    min-height: 0;
+    gap: 22px;
+    padding-top: 28px;
+  }
+
+  .hero h1 {
+    margin-top: 0;
+    font-size: clamp(4rem, 23vw, 7.2rem);
+  }
+
+  .hero h1 span {
+    margin-top: 14px;
+    font-size: clamp(1.6rem, 10vw, 3.2rem);
+  }
+
+  .hero-sub {
+    margin: 18px 0;
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .hero-actions a {
+    justify-content: center;
+    min-height: 46px;
+  }
+
+  .hero-panel.hero-panel--lanyard {
+    min-height: 0;
+  }
+
+  .lanyard-card {
+    min-height: 410px;
+    width: min(100%, 360px);
+  }
+
+  .lanyard-card__rope {
+    top: -34px;
+    width: 210px;
+    height: 244px;
+  }
+
+  .lanyard-card__clip {
+    top: 138px;
+  }
+
+  .lanyard-card__badge {
+    width: min(100%, 340px);
+    min-height: 370px;
+    margin-top: 76px;
+    padding: 20px;
+  }
+
+  .logo-loop {
+    border-radius: 24px;
+    mask-image: none;
+  }
+
+  .logo-loop__track {
+    gap: 24px;
+    padding: 14px 18px;
+  }
+
+  .contact-dock-panel {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 26px;
+  }
+
+  .contact-dock-item {
+    min-height: 98px;
+    padding: 12px 8px;
+    gap: 7px;
+  }
+
+  .contact-dock-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .contact-dock-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .contact-dock-item strong {
+    font-size: 0.74rem;
+    text-align: center;
+    white-space: normal;
+  }
+
   .duck-launch {
-    right: 14px;
-    bottom: 82px;
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    width: auto;
+    justify-content: center;
   }
 
   .duck-panel {
-    right: 14px;
-    bottom: 142px;
-    max-height: 74vh;
+    left: 10px;
+    right: 10px;
+    bottom: 74px;
+    width: auto;
+    max-height: calc(100vh - 94px);
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .duck-panel__head {
+    display: grid;
+    gap: 12px;
+  }
+
+  .duck-panel__tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .duck-panel__tools button {
+    width: 100%;
+  }
+
+  .stable-current {
+    min-height: 92px;
+    padding: 14px;
   }
 
   .duck-form__row {

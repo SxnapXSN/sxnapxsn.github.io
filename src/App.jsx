@@ -1640,6 +1640,8 @@ function AegisLiveStatus() {
 export default function App() {
   const [siteState, setSiteState] = useState(loadState);
   const [showIntro, setShowIntro] = useState(() => loadState().introEnabled);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 760);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dragState, setDragState] = useState(null);
   const [dropState, setDropState] = useState(null);
   const [lightbox, setLightbox] = useState(null);
@@ -1653,6 +1655,24 @@ export default function App() {
   const [fxResetting, setFxResetting] = useState(false);
   const [fxResetToken, setFxResetToken] = useState(0);
   const shellRef = useRef(null);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 760px)");
+    const sync = event => setIsMobile(event.matches);
+    setIsMobile(media.matches);
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileMenuOpen(false);
+      return;
+    }
+    const close = () => setMobileMenuOpen(false);
+    window.addEventListener("hashchange", close);
+    return () => window.removeEventListener("hashchange", close);
+  }, [isMobile]);
 
   useEffect(() => {
     let frame = 0;
@@ -2078,7 +2098,7 @@ export default function App() {
   const veilScan = isLight ? Math.max(0.004, effects.scan * 0.24) : effects.scan;
 
   return (
-    <main ref={shellRef} className={`site-shell ${siteState.theme} preset-${siteState.themePreset || "rose"} effects-${effectQuality} ${fxResetting ? "fx-is-resetting" : ""}`}>
+    <main ref={shellRef} className={`site-shell ${siteState.theme} preset-${siteState.themePreset || "rose"} effects-${effectQuality} ${fxResetting ? "fx-is-resetting" : ""} ${isMobile ? "mobile-mode" : "desktop-mode"}`}>
       {showIntro && <CinematicIntro theme={siteState.theme} themePreset={siteState.themePreset || "rose"} onDone={() => setShowIntro(false)} />}
 
       <div className="ambient ambient-one" />
@@ -2103,39 +2123,94 @@ export default function App() {
       )}
       <div className="grain" />
 
-      <header className="topbar">
-        <PillNav logo="XSN" items={navItems} />
-        <div className="topbar-actions">
-          <div className="topbar-actions__mode">
-            <button onClick={() => setShowIntro(true)}>Replay Intro</button>
-            <button
-              className="theme-toggle"
-              onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
-            >
-              {isLight ? "Dark" : "Light"}
-            </button>
-          </div>
-          <select
-            className="theme-select"
-            value={siteState.themePreset || "rose"}
-            aria-label="Theme preset"
-            onChange={event => setSiteState(current => ({ ...current, themePreset: event.target.value }))}
-          >
-            {themePresets.map(([value, label]) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </select>
-          <select
-            className="theme-select effect-select"
-            value={effectQuality}
-            aria-label="Effect quality"
-            onChange={event => setSiteState(current => ({ ...current, effectQuality: event.target.value }))}
-          >
-            {effectQualityOptions.map(([value, label]) => (
-              <option key={value} value={value}>FX {label}</option>
-            ))}
-          </select>
-        </div>
+      <header className={`topbar ${isMobile ? "topbar--mobile" : ""} ${mobileMenuOpen ? "is-open" : ""}`}>
+        {isMobile ? (
+          <>
+            <div className="topbar-mobile-head">
+              <a className="brand-mark" href="#hero">XSN</a>
+              <div className="topbar-mobile-shortcuts">
+                <button
+                  className="theme-toggle"
+                  onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
+                >
+                  {isLight ? "Dark" : "Light"}
+                </button>
+                <button type="button" onClick={() => setMobileMenuOpen(value => !value)}>
+                  {mobileMenuOpen ? "Close" : "Menu"}
+                </button>
+              </div>
+            </div>
+            <div className={`topbar-mobile-panel ${mobileMenuOpen ? "is-open" : ""}`}>
+              <PillNav
+                logo="XSN"
+                items={navItems}
+                compact
+                mobileOpen={mobileMenuOpen}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
+              <div className="topbar-actions">
+                <div className="topbar-actions__mode">
+                  <button onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>Replay Intro</button>
+                </div>
+                <select
+                  className="theme-select"
+                  value={siteState.themePreset || "rose"}
+                  aria-label="Theme preset"
+                  onChange={event => setSiteState(current => ({ ...current, themePreset: event.target.value }))}
+                >
+                  {themePresets.map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+                <select
+                  className="theme-select effect-select"
+                  value={effectQuality}
+                  aria-label="Effect quality"
+                  onChange={event => setSiteState(current => ({ ...current, effectQuality: event.target.value }))}
+                >
+                  {effectQualityOptions.map(([value, label]) => (
+                    <option key={value} value={value}>FX {label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <PillNav logo="XSN" items={navItems} />
+            <div className="topbar-actions">
+              <div className="topbar-actions__mode">
+                <button onClick={() => setShowIntro(true)}>Replay Intro</button>
+                <button
+                  className="theme-toggle"
+                  onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
+                >
+                  {isLight ? "Dark" : "Light"}
+                </button>
+              </div>
+              <select
+                className="theme-select"
+                value={siteState.themePreset || "rose"}
+                aria-label="Theme preset"
+                onChange={event => setSiteState(current => ({ ...current, themePreset: event.target.value }))}
+              >
+                {themePresets.map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+              <select
+                className="theme-select effect-select"
+                value={effectQuality}
+                aria-label="Effect quality"
+                onChange={event => setSiteState(current => ({ ...current, effectQuality: event.target.value }))}
+              >
+                {effectQualityOptions.map(([value, label]) => (
+                  <option key={value} value={value}>FX {label}</option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
       </header>
 
       <section className={`hero section-block ${isSectionVisible("home") ? "" : "section-hidden"}`} id="hero">
