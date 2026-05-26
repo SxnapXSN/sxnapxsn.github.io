@@ -2368,12 +2368,14 @@ export default function App() {
         <SectionLabel eyebrow="#7 Gallery" title={editableValue("gallery-title", "Gallery")} titleId="gallery-title" onEdit={openTextEditor}>
           <EditableBlock id="gallery-body" value={editableValue("gallery-body", "Selected portfolio images and memories curated in this space.")} onEdit={openTextEditor} />
         </SectionLabel>
-        <DomeGallery
-          items={domeItems}
-          autoSpin={effects.domeAutoSpin}
-          spinDuration={effects.domeSpinDuration}
-          depth={effects.domeDepth}
-        />
+        {!isMobile && (
+          <DomeGallery
+            items={domeItems}
+            autoSpin={effects.domeAutoSpin}
+            spinDuration={effects.domeSpinDuration}
+            depth={effects.domeDepth}
+          />
+        )}
         <ShowcaseCarousel items={siteState.gallery} type="image" />
         <div className="section-toolbar">
           <button onClick={() => addItem("gallery")}>+ Add image</button>
