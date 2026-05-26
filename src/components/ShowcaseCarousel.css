@@ -5,8 +5,8 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   cursor: grab;
-  overscroll-behavior: contain;
-  touch-action: pan-x;
+  overscroll-behavior: auto;
+  touch-action: auto;
 }
 
 .showcase-carousel::-webkit-scrollbar {
@@ -34,7 +34,7 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(var(--theme-rgb), 0.42) transparent;
   cursor: default;
-  touch-action: pan-y;
+  touch-action: auto;
 }
 
 .showcase-carousel--image {
