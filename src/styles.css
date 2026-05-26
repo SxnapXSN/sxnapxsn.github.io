@@ -2555,6 +2555,17 @@ select:focus {
     aspect-ratio: 1 / 1.12;
   }
 
+  .section-toolbar {
+    margin: 16px 0 10px;
+    padding-inline: 10px;
+  }
+
+  .section-toolbar button {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 0.96rem;
+  }
+
   .media-card,
   .story-card,
   .timeline-card,
@@ -2598,6 +2609,8 @@ select:focus {
   .duck-launch {
     right: 12px;
     bottom: 24px;
+    min-height: 44px;
+    padding: 10px 16px;
   }
 
   .dock a {
@@ -4006,12 +4019,13 @@ body.xsn-edit-mode .mobile-edit-button {
   .detail-grid,
   .timeline,
   .stats-band {
-    padding-inline: 2px;
+    padding-inline: 10px;
   }
 
   .media-grid--gallery .media-card--clean,
   .media-grid--wide .media-card--clean {
-    min-height: clamp(220px, 48vw, 320px);
+    min-height: clamp(186px, 42vw, 252px);
+    border-radius: 22px;
   }
 
   .media-card--clean .media-card__stage,
@@ -4020,7 +4034,8 @@ body.xsn-edit-mode .mobile-edit-button {
     inset: auto;
     min-height: 0;
     max-height: none;
-    aspect-ratio: 1 / 1.12;
+    aspect-ratio: 1 / 1.04;
+    padding: 8px;
   }
 
   .media-card--clean .media-card__stage img,
@@ -4028,13 +4043,20 @@ body.xsn-edit-mode .mobile-edit-button {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 18px;
+  }
+
+  .media-card__body,
+  .contact-card {
+    padding: 10px;
   }
 
   .duck-launch {
-    left: 12px;
-    right: 12px;
-    bottom: 14px;
-    width: auto;
+    left: auto;
+    right: 14px;
+    bottom: 16px;
+    width: fit-content;
+    max-width: calc(100vw - 28px);
     justify-content: center;
   }
 

@@ -214,6 +214,63 @@
   }
 }
 
+@media (max-width: 640px) {
+  .showcase-carousel {
+    margin: 16px 0 20px;
+  }
+
+  .showcase-carousel__track {
+    gap: 12px;
+    padding: 4px 10px 12px;
+    grid-auto-columns: minmax(248px, 80vw);
+  }
+
+  .showcase-carousel__item {
+    min-height: 188px;
+    padding: 10px;
+    border-radius: 22px;
+    gap: 12px;
+  }
+
+  .showcase-carousel__media {
+    min-height: 160px;
+    border-radius: 18px;
+  }
+
+  .showcase-carousel__copy {
+    gap: 8px;
+  }
+
+  .showcase-carousel__copy strong {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+
+  .showcase-carousel__copy p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .showcase-carousel--clip {
+    max-height: min(560px, calc((168px * 2) + 26px));
+    padding-right: 0;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__track {
+    gap: 10px;
+    padding-inline: 10px;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__item {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__media {
+    min-height: 126px;
+    aspect-ratio: 4 / 5;
+  }
+}
+
 @media (max-width: 520px) {
   .showcase-carousel--clip .showcase-carousel__track {
     grid-template-columns: repeat(2, minmax(0, 1fr));
