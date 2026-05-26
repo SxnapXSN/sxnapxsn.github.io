@@ -8,6 +8,22 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      const isLocalHost =
+        window.location.hostname === "127.0.0.1" ||
+        window.location.hostname === "localhost";
+
+      if (!isLocalHost) {
+        const stylesheet = document.createElement("link");
+        stylesheet.rel = "stylesheet";
+        stylesheet.href = "/assets/app.css";
+        document.head.appendChild(stylesheet);
+      }
+
+      const moduleScript = document.createElement("script");
+      moduleScript.type = "module";
+      moduleScript.src = isLocalHost ? "/src/main.jsx" : "/assets/app.js";
+      document.body.appendChild(moduleScript);
+    </script>
   </body>
 </html>
