@@ -560,9 +560,9 @@ body.xsn-interacting .lanyard-card {
 
 .site-shell.mobile-mode .topbar--mobile {
   top: 10px;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 24px;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 30px;
 }
 
 .site-shell.mobile-mode .topbar--mobile .pill-nav,
@@ -571,35 +571,36 @@ body.xsn-interacting .lanyard-card {
 }
 
 .site-shell.mobile-mode .topbar-mobile-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: minmax(84px, 98px) minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
   width: 100%;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: stretch;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts button,
 .site-shell.mobile-mode .topbar-mobile-head .brand-mark {
-  min-height: 46px;
+  min-height: 54px;
 }
 
 .site-shell.mobile-mode .topbar-mobile-shortcuts .viewport-select--mobile {
-  min-height: 46px;
-  max-width: 136px;
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 54px;
+  max-width: none;
 }
 
 .site-shell.mobile-mode .topbar-mobile-panel {
   display: none;
   width: 100%;
-  gap: 12px;
+  gap: 14px;
 }
 
 .site-shell.mobile-mode .topbar--mobile.is-open .topbar-mobile-panel {
@@ -614,6 +615,7 @@ body.xsn-interacting .lanyard-card {
   border: 0;
   background: transparent;
   box-shadow: none;
+  gap: 12px;
 }
 
 .site-shell.mobile-mode .topbar--mobile .topbar-actions__mode {
@@ -624,6 +626,24 @@ body.xsn-interacting .lanyard-card {
 .site-shell.mobile-mode .topbar--mobile .theme-select {
   width: 100%;
   max-width: none;
+  min-height: 54px;
+}
+
+.site-shell.mobile-mode .topbar-mobile-head .brand-mark {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border-radius: 28px;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 1000;
+}
+
+.site-shell.mobile-mode .topbar-mobile-shortcuts button {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.98rem;
 }
 
 .topbar-actions {
@@ -2280,6 +2300,67 @@ select:focus {
   letter-spacing: 0.16em;
 }
 
+@media (max-width: 640px) {
+  .intro-eye {
+    left: -8vw;
+    right: -8vw;
+    height: 38vh;
+  }
+
+  .intro-glow-orbit {
+    width: min(78vw, 420px);
+    height: min(78vw, 420px);
+    opacity: 0.88;
+  }
+
+  .intro-loader {
+    width: min(88vw, 420px);
+    gap: 14px;
+    padding: 28px 20px 24px;
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--hot), transparent 68%), transparent 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+      rgba(0, 0, 0, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 18px 54px rgba(0, 0, 0, 0.34),
+      0 0 72px color-mix(in srgb, var(--hot), transparent 88%);
+  }
+
+  .intro-loader span {
+    font-size: clamp(3.2rem, 18vw, 5.8rem);
+    line-height: 0.84;
+  }
+
+  .intro-loader i {
+    width: 100%;
+    height: 8px;
+  }
+
+  .intro-loader b {
+    margin-top: 2px;
+    font-size: 0.92rem;
+    letter-spacing: 0.22em;
+  }
+
+  .intro-loader small {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+  }
+
+  .intro-skip {
+    right: 16px;
+    bottom: 16px;
+    min-width: 78px;
+    min-height: 42px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+  }
+}
+
 .lanyard-card__cord span {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.82), color-mix(in srgb, var(--hot), transparent 58%)),
@@ -2488,7 +2569,7 @@ select:focus {
 
 @media (max-width: 640px) {
   .site-shell {
-    padding: 14px 12px 112px;
+    padding: 14px 12px 156px;
   }
 
   .topbar nav {
@@ -2601,20 +2682,31 @@ select:focus {
   }
 
   .dock {
-    width: calc(100% - 24px);
-    justify-content: space-between;
+    left: 12px;
+    right: 12px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+    translate: 0 0;
+    width: auto;
+    justify-content: flex-start;
     overflow-x: auto;
+    padding: 8px;
+    gap: 6px;
+    opacity: 0.92;
+    transform: none;
   }
 
   .duck-launch {
     right: 12px;
-    bottom: 24px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
     min-height: 44px;
     padding: 10px 16px;
   }
 
   .dock a {
     white-space: nowrap;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
   }
 }
 
@@ -4054,7 +4146,7 @@ body.xsn-edit-mode .mobile-edit-button {
   .duck-launch {
     left: auto;
     right: 14px;
-    bottom: 16px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
     width: fit-content;
     max-width: calc(100vw - 28px);
     justify-content: center;
