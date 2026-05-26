@@ -2160,6 +2160,9 @@ export default function App() {
                     <option key={value} value={value}>{label}</option>
                   ))}
                 </select>
+                <button type="button" onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>
+                  Replay
+                </button>
                 <button
                   className="theme-toggle"
                   onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
@@ -2180,29 +2183,32 @@ export default function App() {
                 onNavigate={() => setMobileMenuOpen(false)}
               />
               <div className="topbar-actions">
-                <div className="topbar-actions__mode">
-                  <button onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>Replay Intro</button>
+                <div className="topbar-mobile-control">
+                  <span>Theme</span>
+                  <select
+                    className="theme-select"
+                    value={siteState.themePreset || "rose"}
+                    aria-label="Theme preset"
+                    onChange={event => setSiteState(current => ({ ...current, themePreset: event.target.value }))}
+                  >
+                    {themePresets.map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
                 </div>
-                <select
-                  className="theme-select"
-                  value={siteState.themePreset || "rose"}
-                  aria-label="Theme preset"
-                  onChange={event => setSiteState(current => ({ ...current, themePreset: event.target.value }))}
-                >
-                  {themePresets.map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
-                <select
-                  className="theme-select effect-select"
-                  value={effectQuality}
-                  aria-label="Effect quality"
-                  onChange={event => setSiteState(current => ({ ...current, effectQuality: event.target.value }))}
-                >
-                  {effectQualityOptions.map(([value, label]) => (
-                    <option key={value} value={value}>FX {label}</option>
-                  ))}
-                </select>
+                <div className="topbar-mobile-control">
+                  <span>FX</span>
+                  <select
+                    className="theme-select effect-select"
+                    value={effectQuality}
+                    aria-label="Effect quality"
+                    onChange={event => setSiteState(current => ({ ...current, effectQuality: event.target.value }))}
+                  >
+                    {effectQualityOptions.map(([value, label]) => (
+                      <option key={value} value={value}>FX {label}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </>
