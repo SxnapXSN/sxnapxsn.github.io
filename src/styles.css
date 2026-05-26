@@ -595,6 +595,10 @@ body.xsn-interacting .lanyard-card {
   max-width: 146px;
 }
 
+.viewport-select--mobile {
+  min-width: 112px;
+}
+
 .topbar-actions .effect-select {
   max-width: 144px;
 }
@@ -3772,11 +3776,18 @@ body.xsn-edit-mode .mobile-edit-button {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .topbar-mobile-shortcuts button,
   .topbar-mobile-head .brand-mark {
     min-height: 46px;
+  }
+
+  .topbar-mobile-shortcuts .viewport-select--mobile {
+    min-height: 46px;
+    max-width: 136px;
   }
 
   .topbar-mobile-panel {

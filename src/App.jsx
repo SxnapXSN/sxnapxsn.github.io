@@ -1687,6 +1687,15 @@ export default function App() {
   }, [isMobile]);
 
   useEffect(() => {
+    if (viewportMode === "mobile") {
+      setMobileMenuOpen(true);
+    }
+    if (viewportMode === "desktop") {
+      setMobileMenuOpen(false);
+    }
+  }, [viewportMode]);
+
+  useEffect(() => {
     let frame = 0;
     let latestEvent = null;
     const updatePointer = event => {
@@ -2141,6 +2150,16 @@ export default function App() {
             <div className="topbar-mobile-head">
               <a className="brand-mark" href="#hero">XSN</a>
               <div className="topbar-mobile-shortcuts">
+                <select
+                  className="theme-select viewport-select viewport-select--mobile"
+                  value={viewportMode}
+                  aria-label="Viewport mode"
+                  onChange={event => setSiteState(current => ({ ...current, viewportMode: event.target.value }))}
+                >
+                  {viewportModeOptions.map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
                 <button
                   className="theme-toggle"
                   onClick={() => setSiteState(current => ({ ...current, theme: isLight ? "noir" : "lumen" }))}
@@ -2164,16 +2183,6 @@ export default function App() {
                 <div className="topbar-actions__mode">
                   <button onClick={() => { setShowIntro(true); setMobileMenuOpen(false); }}>Replay Intro</button>
                 </div>
-                <select
-                  className="theme-select viewport-select"
-                  value={viewportMode}
-                  aria-label="Viewport mode"
-                  onChange={event => setSiteState(current => ({ ...current, viewportMode: event.target.value }))}
-                >
-                  {viewportModeOptions.map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
                 <select
                   className="theme-select"
                   value={siteState.themePreset || "rose"}
