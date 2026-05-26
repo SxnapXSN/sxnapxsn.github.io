@@ -558,6 +558,74 @@ body.xsn-interacting .lanyard-card {
   display: none;
 }
 
+.site-shell.mobile-mode .topbar--mobile {
+  top: 10px;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 24px;
+}
+
+.site-shell.mobile-mode .topbar--mobile .pill-nav,
+.site-shell.mobile-mode .topbar--mobile > .topbar-actions {
+  display: none;
+}
+
+.site-shell.mobile-mode .topbar-mobile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.site-shell.mobile-mode .topbar-mobile-shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.site-shell.mobile-mode .topbar-mobile-shortcuts button,
+.site-shell.mobile-mode .topbar-mobile-head .brand-mark {
+  min-height: 46px;
+}
+
+.site-shell.mobile-mode .topbar-mobile-shortcuts .viewport-select--mobile {
+  min-height: 46px;
+  max-width: 136px;
+}
+
+.site-shell.mobile-mode .topbar-mobile-panel {
+  display: none;
+  width: 100%;
+  gap: 12px;
+}
+
+.site-shell.mobile-mode .topbar--mobile.is-open .topbar-mobile-panel {
+  display: grid;
+}
+
+.site-shell.mobile-mode .topbar--mobile .topbar-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-shell.mobile-mode .topbar--mobile .topbar-actions__mode {
+  width: 100%;
+}
+
+.site-shell.mobile-mode .topbar--mobile .topbar-actions__mode button,
+.site-shell.mobile-mode .topbar--mobile .theme-select {
+  width: 100%;
+  max-width: none;
+}
+
 .topbar-actions {
   display: grid;
   grid-template-columns: auto minmax(118px, 146px) minmax(128px, 168px) minmax(116px, 144px);
