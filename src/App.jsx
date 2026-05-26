@@ -384,7 +384,7 @@ const effectQualityConfig = {
 const defaultState = {
   theme: "noir",
   themePreset: "rose",
-  effectQuality: "balanced",
+  effectQuality: "low",
   roseDefaultApplied: true,
   detailsDefaultOffApplied: true,
   introEnabled: true,
@@ -490,6 +490,7 @@ function loadState() {
       ...defaultState,
       ...parsed,
       sections,
+      effectQuality: parsed.effectQuality || "low",
       themePreset: parsed.roseDefaultApplied ? (parsed.themePreset || "rose") : "rose",
       roseDefaultApplied: true,
       detailsDefaultOffApplied: true
@@ -1753,8 +1754,8 @@ export default function App() {
   }, []);
 
   const isLight = siteState.theme === "lumen";
-  const effectQuality = siteState.effectQuality || "balanced";
-  const effects = effectQualityConfig[effectQuality] || effectQualityConfig.balanced;
+  const effectQuality = siteState.effectQuality || "low";
+  const effects = effectQualityConfig[effectQuality] || effectQualityConfig.low;
 
   useEffect(() => {
     let frame = requestAnimationFrame(() => {

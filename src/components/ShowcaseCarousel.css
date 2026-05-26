@@ -208,7 +208,33 @@
   }
 
   .showcase-carousel--clip .showcase-carousel__track {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .showcase-carousel--clip .showcase-carousel__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .showcase-carousel--clip .showcase-carousel__item {
+    padding: 10px;
+    gap: 10px;
+    border-radius: 22px;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__copy strong {
+    font-size: 1rem;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__copy p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .showcase-carousel--clip .showcase-carousel__media {
+    min-height: 140px;
   }
 }
 

@@ -2446,11 +2446,10 @@ select:focus {
   .timeline,
   .stats-band,
   .contact-grid,
-  .contact-dock-panel,
   .image-library-grid,
   .detail-grid,
   .visitor-ledger {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .image-library-modal {
@@ -2459,13 +2458,14 @@ select:focus {
   }
 
   .contact-dock-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     border-radius: 28px;
     padding: 12px;
   }
 
   .contact-dock-item {
-    grid-template-columns: auto 1fr;
-    justify-items: start;
+    grid-template-columns: 1fr;
+    justify-items: center;
     min-height: 86px;
   }
 
@@ -2477,6 +2477,15 @@ select:focus {
 
   .media-card__stage {
     aspect-ratio: 1 / 1.12;
+  }
+
+  .media-card,
+  .story-card,
+  .timeline-card,
+  .detail-card,
+  .stat-card,
+  .visitor-row {
+    border-radius: 22px;
   }
 
   .drag-handle,
@@ -3871,7 +3880,7 @@ body.xsn-edit-mode .mobile-edit-button {
   }
 
   .contact-dock-panel {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-top: 18px;
     padding: 12px;
