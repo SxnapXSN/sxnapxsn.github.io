@@ -8,6 +8,7 @@ import MagicBento from "./components/MagicBento.jsx";
 import PillNav from "./components/PillNav.jsx";
 import PixelReveal from "./components/PixelReveal.jsx";
 import ShowcaseCarousel from "./components/ShowcaseCarousel.jsx";
+import heroId01Image from "../assets/images/hero-id-01.jpg";
 
 const STORAGE_KEY = "xsn-us-showcase-state-v2";
 const DUCK_UNLOCK_KEY = "xsn-us-showcase-duck-unlock";
@@ -407,7 +408,13 @@ const defaultState = {
   contentEdits: {},
   visitorLog: [],
   imageLibrary: [],
-  heroMedia: [],
+  heroMedia: [
+    {
+      id: "hero-default-1",
+      title: "#Hero-1 Screenshot_20250407_021502.jpg",
+      url: heroId01Image
+    }
+  ],
   gallery: [
     { id: "g1", title: "#Gallery-1 Portfolio Moment", note: "Selected image, memory, or visual highlight.", url: "" },
     { id: "g2", title: "#Gallery-2 Memory Frame", note: "A personal moment, project mood, or saved scene.", url: "" },
@@ -464,6 +471,7 @@ function polishStateText(state) {
   return {
     ...state,
     textPolishVersion: 2,
+    heroMedia: state.heroMedia?.length ? state.heroMedia : defaultState.heroMedia,
     contentEdits: {
       ...(state.contentEdits || {}),
       ...Object.fromEntries(
@@ -497,6 +505,7 @@ function loadState() {
     return polishStateText({
       ...defaultState,
       ...parsed,
+      heroMedia: parsed.heroMedia?.length ? parsed.heroMedia : defaultState.heroMedia,
       sections,
       effectQuality: parsed.effectQuality || "low",
       viewportMode: parsed.viewportMode || "auto",
