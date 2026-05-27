@@ -1389,7 +1389,7 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
   };
 
   const submitUnlock = () => {
-    if (password.trim().toUpperCase() !== "XSN") {
+    if (password.trim() !== "SxnapXSN") {
       setAuthError("Wrong password");
       return;
     }
@@ -1438,7 +1438,7 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
                       setPassword(event.target.value);
                       setAuthError("");
                     }}
-                    placeholder="XSN"
+                    placeholder=""
                     onKeyDown={event => {
                       if (event.key === "Enter") submitUnlock();
                     }}
