@@ -10,6 +10,7 @@ import PixelReveal from "./components/PixelReveal.jsx";
 import ShowcaseCarousel from "./components/ShowcaseCarousel.jsx";
 
 const STORAGE_KEY = "xsn-us-showcase-state-v2";
+const DUCK_UNLOCK_KEY = "xsn-us-showcase-duck-unlock";
 const MEDIA_DB_NAME = "xsn-us-showcase-media";
 const MEDIA_DB_VERSION = 1;
 const MEDIA_STORE_NAME = "media";
@@ -737,17 +738,19 @@ function EditableBlock({ id, as: Tag = "span", value, className = "", onEdit }) 
   return (
     <span className={`editable-block ${className}`}>
       <Tag>{value}</Tag>
-      <button
-        className="mobile-edit-button text-edit-button"
-        type="button"
-        onClick={event => {
-          event.preventDefault();
-          event.stopPropagation();
-          onEdit(id, value);
-        }}
-      >
-        EDIT
-      </button>
+      {onEdit && (
+        <button
+          className="mobile-edit-button text-edit-button"
+          type="button"
+          onClick={event => {
+            event.preventDefault();
+            event.stopPropagation();
+            onEdit(id, value);
+          }}
+        >
+          EDIT
+        </button>
+      )}
     </span>
   );
 }
@@ -828,7 +831,7 @@ function StableMediaVideo({ src, title, className = "", active = true }) {
   );
 }
 
-function MediaCard({ item, index, type, dragClass, onChange, onFileSelect, onRemove, onDragStart, onDragEnd, onDragOver, onDrop, onOpen, onOpenEditor }) {
+function MediaCard({ item, index, type, dragClass, editable = false, onChange, onFileSelect, onRemove, onDragStart, onDragEnd, onDragOver, onDrop, onOpen, onOpenEditor }) {
   const hasMedia = item.url.trim().length > 0;
   const inputId = `${type}-file-${item.id}`;
   const previewMode = item.previewMode || "always";
@@ -840,6 +843,7 @@ function MediaCard({ item, index, type, dragClass, onChange, onFileSelect, onRem
   const previewVisible = previewMode === "always" || (previewMode === "click" && revealed) || (previewMode === "hover" && hovered);
   const handleStageClick = () => {
     if (!hasMedia) {
+      if (!editable) return;
       document.getElementById(inputId)?.click();
       return;
     }
@@ -857,32 +861,37 @@ function MediaCard({ item, index, type, dragClass, onChange, onFileSelect, onRem
       onDragOver={event => onDragOver(event, index)}
       onDrop={event => onDrop(event, index)}
       onContextMenu={event => {
+        if (!editable) return;
         event.preventDefault();
         event.stopPropagation();
-        onOpenEditor(item, type, { x: event.clientX, y: event.clientY });
+        onOpenEditor?.(item, type, { x: event.clientX, y: event.clientY });
       }}
     >
-      <button
-        className="drag-handle"
-        draggable
-        onDragStart={event => onDragStart(event, index)}
-        onDragEnd={onDragEnd}
-        type="button"
-        aria-label={`Move ${item.title}`}
-      >
-        MOVE
-      </button>
-      <button
-        className="mobile-edit-button"
-        type="button"
-        aria-label={`Edit ${type}`}
-        onClick={event => {
-          event.stopPropagation();
-          onOpenEditor(item, type, { x: event.clientX, y: event.clientY });
-        }}
-      >
-        EDIT
-      </button>
+      {editable && (
+        <button
+          className="drag-handle"
+          draggable
+          onDragStart={event => onDragStart(event, index)}
+          onDragEnd={onDragEnd}
+          type="button"
+          aria-label={`Move ${item.title}`}
+        >
+          MOVE
+        </button>
+      )}
+      {editable && (
+        <button
+          className="mobile-edit-button"
+          type="button"
+          aria-label={`Edit ${type}`}
+          onClick={event => {
+            event.stopPropagation();
+            onOpenEditor?.(item, type, { x: event.clientX, y: event.clientY });
+          }}
+        >
+          EDIT
+        </button>
+      )}
       <div
         className="media-card__stage"
         role="button"
@@ -918,10 +927,43 @@ function MediaCard({ item, index, type, dragClass, onChange, onFileSelect, onRem
           ZOOM
         </button>
       </div>
-      <div className="media-card__body">
-        <label className="file-picker" htmlFor={inputId}>
-          + FILE
-        </label>
+      {editable ? (
+        <div className="media-card__body">
+          <label className="file-picker" htmlFor={inputId}>
+            + FILE
+          </label>
+          <input
+            id={inputId}
+            className="file-picker-input"
+            type="file"
+            accept={type === "clip" ? "video/*" : "image/*"}
+            onChange={event => onFileSelect(item.id, event.target.files?.[0])}
+          />
+          <input
+            value={item.title}
+            onChange={event => onChange(item.id, "title", event.target.value)}
+            aria-label={`${type} title`}
+          />
+          <textarea
+            value={item.note}
+            onChange={event => onChange(item.id, "note", event.target.value)}
+            aria-label={`${type} note`}
+          />
+          <div className="advanced-url">
+            <span>Advanced URL</span>
+            <input
+              value={item.url}
+              onChange={event => onChange(item.id, "url", event.target.value)}
+              placeholder={type === "clip" ? "#URL optional clip link" : "#URL optional image link"}
+              aria-label={`${type} url`}
+            />
+          </div>
+          <div className="mini-actions">
+            <span className="drag-hint">Drag to reorder</span>
+            <button className="danger" onClick={() => onRemove(item.id)}>DELETE</button>
+          </div>
+        </div>
+      ) : (
         <input
           id={inputId}
           className="file-picker-input"
@@ -929,30 +971,7 @@ function MediaCard({ item, index, type, dragClass, onChange, onFileSelect, onRem
           accept={type === "clip" ? "video/*" : "image/*"}
           onChange={event => onFileSelect(item.id, event.target.files?.[0])}
         />
-        <input
-          value={item.title}
-          onChange={event => onChange(item.id, "title", event.target.value)}
-          aria-label={`${type} title`}
-        />
-        <textarea
-          value={item.note}
-          onChange={event => onChange(item.id, "note", event.target.value)}
-          aria-label={`${type} note`}
-        />
-        <div className="advanced-url">
-          <span>Advanced URL</span>
-          <input
-            value={item.url}
-            onChange={event => onChange(item.id, "url", event.target.value)}
-            placeholder={type === "clip" ? "#URL optional clip link" : "#URL optional image link"}
-            aria-label={`${type} url`}
-          />
-        </div>
-        <div className="mini-actions">
-          <span className="drag-hint">Drag to reorder</span>
-          <button className="danger" onClick={() => onRemove(item.id)}>DELETE</button>
-        </div>
-      </div>
+      )}
     </article>
   );
 }
@@ -1150,7 +1169,7 @@ function ContactIcon({ type, fallback }) {
   return <span>{fallback}</span>;
 }
 
-function ContactDock({ contacts, onOpenEditor }) {
+function ContactDock({ contacts, editable = false, onOpenEditor }) {
   return (
     <div className="contact-dock-panel" aria-label="Contact dock">
       {contacts.map((contact, index) => {
@@ -1163,7 +1182,7 @@ function ContactDock({ contacts, onOpenEditor }) {
             type="button"
             onClick={event => {
               if (isEmpty || !meta.href) {
-                onOpenEditor(contact);
+                if (editable) onOpenEditor(contact);
                 return;
               }
               if (meta.href.startsWith("tel:") || meta.href.startsWith("mailto:")) {
@@ -1174,21 +1193,24 @@ function ContactDock({ contacts, onOpenEditor }) {
               window.open(meta.href, "_blank", "noopener,noreferrer");
             }}
             onContextMenu={event => {
+              if (!editable) return;
               event.preventDefault();
               onOpenEditor(contact, { x: event.clientX, y: event.clientY });
             }}
             title="Click to open. Right-click to edit."
           >
-            <span
-              className="mobile-edit-button contact-edit-button"
-              onClick={event => {
-                event.preventDefault();
-                event.stopPropagation();
-                onOpenEditor(contact, { x: event.clientX, y: event.clientY });
-              }}
-            >
-              EDIT
-            </span>
+            {editable && (
+              <span
+                className="mobile-edit-button contact-edit-button"
+                onClick={event => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  onOpenEditor(contact, { x: event.clientX, y: event.clientY });
+                }}
+              >
+                EDIT
+              </span>
+            )}
             <span className="contact-dock-icon">
               <ContactIcon type={meta.className} fallback={meta.icon} />
             </span>
@@ -1222,10 +1244,12 @@ function normalizeDuckDraft(host = {}) {
   };
 }
 
-function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImageLibrary }) {
+function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImageLibrary, duckUnlocked, setDuckUnlocked }) {
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [sectionManagerOpen, setSectionManagerOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
   const [hosts, setHosts] = useState([]);
   const [otherHosts, setOtherHosts] = useState([]);
   const [stableStatus, setStableStatus] = useState(null);
@@ -1251,9 +1275,9 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
   }, [busy]);
 
   useEffect(() => {
-    document.body.classList.toggle("xsn-edit-mode", editMode);
+    document.body.classList.toggle("xsn-edit-mode", duckUnlocked && editMode);
     return () => document.body.classList.remove("xsn-edit-mode");
-  }, [editMode]);
+  }, [duckUnlocked, editMode]);
 
   const refreshHosts = async () => {
     try {
@@ -1364,6 +1388,24 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
     });
   };
 
+  const submitUnlock = () => {
+    if (password.trim().toUpperCase() !== "XSN") {
+      setAuthError("Wrong password");
+      return;
+    }
+    setDuckUnlocked(true);
+    setStorageValue("localStorage", DUCK_UNLOCK_KEY, "1");
+    setPassword("");
+    setAuthError("");
+  };
+
+  const lockDuck = () => {
+    setDuckUnlocked(false);
+    setEditMode(false);
+    setStorageValue("localStorage", DUCK_UNLOCK_KEY, "0");
+    setOpen(false);
+  };
+
   return (
     <>
       <button className={`duck-launch ${open ? "is-open" : ""}`} type="button" onClick={() => setOpen(current => !current)}>
@@ -1371,6 +1413,46 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
       </button>
       {open && (
         <aside className="duck-panel" aria-label="Duck host settings">
+          {!duckUnlocked ? (
+            <>
+              <div className="duck-panel__head">
+                <div>
+                  <span>LOCKED</span>
+                  <strong>Duck Setting</strong>
+                </div>
+                <div className="duck-panel__tools">
+                  <button type="button" onClick={() => setOpen(false)}>NO</button>
+                </div>
+              </div>
+              <div className="duck-aegis-card">
+                <span className="duck-orb" />
+                <p>Unlock with password to restore add, edit, upload, and library controls.</p>
+              </div>
+              <div className="duck-form">
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={event => {
+                      setPassword(event.target.value);
+                      setAuthError("");
+                    }}
+                    placeholder="XSN"
+                    onKeyDown={event => {
+                      if (event.key === "Enter") submitUnlock();
+                    }}
+                  />
+                </label>
+                {authError && <small className="duck-auth-error">{authError}</small>}
+                <div className="duck-actions">
+                  <button className="success" type="button" onClick={submitUnlock}>UNLOCK</button>
+                  <button type="button" onClick={() => setOpen(false)}>CLOSE</button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
           <div className="duck-panel__head">
             <div>
               <span>AEGIS SUP</span>
@@ -1385,6 +1467,7 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
               >
                 EDIT {editMode ? "ON" : "OFF"}
               </button>
+              <button type="button" onClick={lockDuck}>LOCK</button>
               <button type="button" onClick={() => setSectionManagerOpen(true)}>SECTIONS</button>
               <button type="button" onClick={onOpenImageLibrary}>LIBRARY {imageLibraryCount}</button>
               <button type="button" onClick={() => setOpen(false)}>NO</button>
@@ -1535,9 +1618,11 @@ function DuckSettings({ sections, onToggleSection, imageLibraryCount, onOpenImag
               </article>
             ))}
           </div>
+          </>
+          )}
         </aside>
       )}
-      {sectionManagerOpen && (
+      {duckUnlocked && sectionManagerOpen && (
         <div
           className="contact-editor-backdrop"
           onMouseDown={event => event.target === event.currentTarget && setSectionManagerOpen(false)}
@@ -1663,6 +1748,7 @@ export default function App() {
   const [storageWarning, setStorageWarning] = useState("");
   const [fxResetting, setFxResetting] = useState(false);
   const [fxResetToken, setFxResetToken] = useState(0);
+  const [duckUnlocked, setDuckUnlocked] = useState(() => getStorageValue("localStorage", DUCK_UNLOCK_KEY) === "1");
   const shellRef = useRef(null);
 
   useEffect(() => {
@@ -1776,6 +1862,7 @@ export default function App() {
   const isLight = siteState.theme === "lumen";
   const effectQuality = siteState.effectQuality || "low";
   const effects = effectQualityConfig[effectQuality] || effectQualityConfig.low;
+  const canEdit = duckUnlocked;
 
   useEffect(() => {
     let frame = requestAnimationFrame(() => {
@@ -1798,6 +1885,7 @@ export default function App() {
   };
 
   const addItem = key => {
+    if (!canEdit) return;
     const isClip = key === "clips";
     const isContact = key === "contacts";
     const id = `${key}-${Date.now()}`;
@@ -1815,6 +1903,7 @@ export default function App() {
   const removeItem = (key, id) => setList(key, list => list.filter(item => item.id !== id));
 
   const openMediaEditor = (item, type, position = null) => {
+    if (!canEdit) return;
     setMediaEditor({
       id: item.id,
       type,
@@ -1851,6 +1940,7 @@ export default function App() {
   };
 
   const openContactEditor = (contact, position = null) => {
+    if (!canEdit) return;
     setContactEditor({
       id: contact.id,
       draft: { ...contact },
@@ -1872,11 +1962,13 @@ export default function App() {
   };
 
   const addContactSlot = () => {
+    if (!canEdit) return;
     setList("contacts", list => [...list, { id: `c${Date.now()}`, label: "", value: "", href: "" }]);
     setContactEditor(null);
   };
 
   const handleFileSelect = async (key, id, file) => {
+    if (!canEdit) return;
     if (!file) return;
     const url = key === "gallery" ? await compressImageFile(file) : await fileToDataUrl(file);
     const mediaKey = key === "gallery" || key === "clips" ? `xsn:${key}:${id}` : undefined;
@@ -1898,6 +1990,7 @@ export default function App() {
   };
 
   const handleHeroMediaSelect = files => {
+    if (!canEdit) return;
     const selectedFiles = Array.from(files || []).filter(Boolean);
     if (!selectedFiles.length) return;
 
@@ -1932,6 +2025,7 @@ export default function App() {
   };
 
   const openIdentityMenu = event => {
+    if (!canEdit) return;
     event.preventDefault();
     event.stopPropagation();
     setIdentityEditor({ x: event.clientX, y: event.clientY });
@@ -1948,6 +2042,7 @@ export default function App() {
   };
 
   const storeImageInLibrary = (item, source = "gallery") => {
+    if (!canEdit) return;
     if (!item?.url) return;
     const mediaKey = item.mediaKey || `xsn:library:${Date.now()}-${Math.random().toString(16).slice(2, 6)}`;
     putMediaAsset(mediaKey, item.url).finally(() => {
@@ -1982,6 +2077,7 @@ export default function App() {
   };
 
   const addLibraryImageToGallery = item => {
+    if (!canEdit) return;
     setSiteState(current => ({
       ...current,
       gallery: [
@@ -2081,7 +2177,10 @@ export default function App() {
     }));
   };
   const editableValue = (id, fallback) => siteState.contentEdits?.[id] ?? fallback;
-  const openTextEditor = (id, value) => setTextEditor({ id, value });
+  const openTextEditor = (id, value) => {
+    if (!canEdit) return;
+    setTextEditor({ id, value });
+  };
   const saveTextEditor = () => {
     if (!textEditor) return;
     setSiteState(current => ({
@@ -2284,9 +2383,9 @@ export default function App() {
             idText="#ID-01"
             nameText={editableValue("hero-card-name", "Anurak Nutthian")}
             descriptionText={editableValue("hero-card-desc", "Independent developer, experimenter, and visual builder.")}
-            onEditText={openTextEditor}
-            onAddMedia={() => document.getElementById("hero-identity-file")?.click()}
-            onOpenMediaMenu={openIdentityMenu}
+            onEditText={canEdit ? openTextEditor : null}
+            onAddMedia={canEdit ? (() => document.getElementById("hero-identity-file")?.click()) : null}
+            onOpenMediaMenu={canEdit ? openIdentityMenu : null}
             onOpenMedia={item => openLightbox(item, "image")}
           />
           <input
@@ -2383,9 +2482,11 @@ export default function App() {
           />
         )}
         <ShowcaseCarousel items={siteState.gallery} type="image" />
-        <div className="section-toolbar">
-          <button onClick={() => addItem("gallery")}>+ Add image</button>
-        </div>
+        {canEdit && (
+          <div className="section-toolbar">
+            <button onClick={() => addItem("gallery")}>+ Add image</button>
+          </div>
+        )}
         <div className="media-grid media-grid--gallery">
           {siteState.gallery.map((item, index) => (
             <MediaCard
@@ -2394,6 +2495,7 @@ export default function App() {
               index={index}
               type="image"
               dragClass={getDragClass("gallery", index)}
+              editable={canEdit}
               onChange={(id, field, value) => updateItem("gallery", id, field, value)}
               onFileSelect={(id, file) => handleFileSelect("gallery", id, file)}
               onRemove={id => removeItem("gallery", id)}
@@ -2413,9 +2515,11 @@ export default function App() {
           <EditableBlock id="clips-body" value={editableValue("clips-body", "Video highlights, demos, and memorable moments.")} onEdit={openTextEditor} />
         </SectionLabel>
         <ShowcaseCarousel items={siteState.clips} type="clip" />
-        <div className="section-toolbar">
-          <button onClick={() => addItem("clips")}>+ Add clip</button>
-        </div>
+        {canEdit && (
+          <div className="section-toolbar">
+            <button onClick={() => addItem("clips")}>+ Add clip</button>
+          </div>
+        )}
         <div className="media-grid media-grid--wide">
           {siteState.clips.map((item, index) => (
             <MediaCard
@@ -2424,6 +2528,7 @@ export default function App() {
               index={index}
               type="clip"
               dragClass={getDragClass("clips", index)}
+              editable={canEdit}
               onChange={(id, field, value) => updateItem("clips", id, field, value)}
               onFileSelect={(id, file) => handleFileSelect("clips", id, file)}
               onRemove={id => removeItem("clips", id)}
@@ -2467,7 +2572,7 @@ export default function App() {
         <SectionLabel eyebrow="#10 Contact" title={editableValue("contact-title", "Contact")} titleId="contact-title" onEdit={openTextEditor}>
           <EditableBlock id="contact-body" value={editableValue("contact-body", "Contact links for social platforms, direct messages, phone, email, and profile pages.")} onEdit={openTextEditor} />
         </SectionLabel>
-        <ContactDock contacts={siteState.contacts} onOpenEditor={openContactEditor} />
+        <ContactDock contacts={siteState.contacts} editable={canEdit} onOpenEditor={openContactEditor} />
       </section>
 
       <section className={`section-block visitors-section ${isSectionVisible("visitors") ? "" : "section-hidden"}`} id="visitors">
@@ -2517,6 +2622,8 @@ export default function App() {
         onToggleSection={toggleSection}
         imageLibraryCount={(siteState.imageLibrary || []).length}
         onOpenImageLibrary={() => setImageLibraryOpen(true)}
+        duckUnlocked={duckUnlocked}
+        setDuckUnlocked={setDuckUnlocked}
       />
 
       {lightbox && (

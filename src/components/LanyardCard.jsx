@@ -45,16 +45,18 @@ function CircularIdentityGallery({ items, onAdd, onOpenMenu, onOpenItem }) {
   if (!items.length) {
     return (
       <div className="identity-gallery identity-gallery--empty" role="button" tabIndex={0} onClick={onAdd} onContextMenu={onOpenMenu}>
-        <button
-          className="mobile-edit-button identity-edit-button"
-          type="button"
-          onClick={event => {
-            event.stopPropagation();
-            onOpenMenu?.(event);
-          }}
-        >
-          EDIT
-        </button>
+        {onOpenMenu && (
+          <button
+            className="mobile-edit-button identity-edit-button"
+            type="button"
+            onClick={event => {
+              event.stopPropagation();
+              onOpenMenu?.(event);
+            }}
+          >
+            EDIT
+          </button>
+        )}
         <span>XSN</span>
       </div>
     );
@@ -93,19 +95,21 @@ function CircularIdentityGallery({ items, onAdd, onOpenMenu, onOpenItem }) {
       onKeyDown={event => {
         if (event.key === "ArrowRight") shift(1);
         if (event.key === "ArrowLeft") shift(-1);
-        if (event.key === "Enter") onAdd();
+        if (event.key === "Enter") onAdd?.();
       }}
     >
-      <button
-        className="mobile-edit-button identity-edit-button"
-        type="button"
-        onClick={event => {
-          event.stopPropagation();
-          onOpenMenu?.(event);
-        }}
-      >
-        EDIT
-      </button>
+      {onOpenMenu && (
+        <button
+          className="mobile-edit-button identity-edit-button"
+          type="button"
+          onClick={event => {
+            event.stopPropagation();
+            onOpenMenu?.(event);
+          }}
+        >
+          EDIT
+        </button>
+      )}
       <div className="identity-gallery__track" style={{ "--slide-index": activeIndex }}>
         {items.map((item, index) => (
           <figure className="identity-gallery__slide" key={item.id}>
@@ -211,11 +215,11 @@ export default function LanyardCard({
           <small>{idText}</small>
           <div className="lanyard-editable-line">
             <strong>{nameText}</strong>
-            <button className="mobile-edit-button text-edit-button" type="button" onClick={() => onEditText?.("hero-card-name", nameText)}>EDIT</button>
+            {onEditText && <button className="mobile-edit-button text-edit-button" type="button" onClick={() => onEditText?.("hero-card-name", nameText)}>EDIT</button>}
           </div>
           <div className="lanyard-editable-line lanyard-editable-line--body">
             <p>{descriptionText}</p>
-            <button className="mobile-edit-button text-edit-button" type="button" onClick={() => onEditText?.("hero-card-desc", descriptionText)}>EDIT</button>
+            {onEditText && <button className="mobile-edit-button text-edit-button" type="button" onClick={() => onEditText?.("hero-card-desc", descriptionText)}>EDIT</button>}
           </div>
         </div>
         <div className="lanyard-card__chips">

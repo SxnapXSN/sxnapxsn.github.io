@@ -2725,10 +2725,10 @@ select:focus {
     width: auto;
     max-width: 360px;
     margin-inline: auto;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    justify-content: stretch;
-    overflow: visible;
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding: 6px;
     gap: 4px;
     opacity: 0.84;
@@ -2752,11 +2752,17 @@ select:focus {
   .gooey-dock {
     gap: 4px;
     padding: 6px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .gooey-dock::-webkit-scrollbar {
+    display: none;
   }
 
   .duck-launch {
     right: 16px;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 76px);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 54px);
     min-height: 34px;
     padding: 7px 11px;
     width: fit-content;
@@ -2776,17 +2782,21 @@ select:focus {
   .dock a {
     white-space: normal;
     min-height: 32px;
-    padding: 6px 4px;
+    min-width: calc((100vw - 64px) / 3);
+    max-width: 104px;
+    flex: 0 0 calc((100vw - 64px) / 3);
+    padding: 6px 8px;
     font-size: 0.66rem;
     text-align: center;
     justify-content: center;
     line-height: 1.08;
     letter-spacing: 0.03em;
     border-radius: 14px;
+    scroll-snap-align: start;
   }
 
   .duck-panel {
-    bottom: 118px;
+    bottom: 100px;
   }
 }
 
@@ -3458,6 +3468,13 @@ select:focus {
   margin: 0;
   line-height: 1.45;
   font-weight: 760;
+}
+
+.duck-auth-error {
+  color: var(--danger);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
 }
 
 .duck-orb {
